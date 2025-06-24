@@ -16,7 +16,7 @@ export default function CreateProfile() {
     formData.append("senderEmail", senderEmail);
 
     try {
-      const res = await fetch("https://email-market.onrender.com/api/profile", {
+      const res = await fetch("https://email-market.onrender.com/api/profile/create", {
         method: "POST",
         body: formData,
       });
