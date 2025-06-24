@@ -39,7 +39,7 @@ export default function Home() {
             onChange={(e) => setEmail(e.target.value)}
             placeholder="Enter your email"
             required
-            className="w-full px-4 py-2 border rounded"
+            className="w-full px-4 py-2 border rounded text-black ::placeholder-gray-500"
           />
           <button
             type="submit"

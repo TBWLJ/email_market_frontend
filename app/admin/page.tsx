@@ -2,15 +2,20 @@
 import { useState } from "react";
 
 export default function UploadPage() {
-  const [file, setFile] = useState(null);
+  const [file, setFile] = useState<File | null>(null);
   const [status, setStatus] = useState("");
 
-  const handleUpload = async (e) => {
+  const handleUpload = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setStatus("Uploading...");
 
     const formData = new FormData();
-    formData.append("pdf", file);
+    if (file) {
+      formData.append("pdf", file);
+    } else {
+      setStatus("No file selected.");
+      return;
+    }
 
     try {
       const res = await fetch("http://localhost:5000/api/upload", {
@@ -33,14 +38,17 @@ export default function UploadPage() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100 p-4">
       <div className="bg-white p-8 rounded shadow-md w-full max-w-md">
-        <h1 className="text-2xl font-bold mb-4">Admin PDF Upload</h1>
+        <h1 className="text-2xl font-bold mb-4 text-blue-700">Admin PDF Upload</h1>
         <form onSubmit={handleUpload} className="space-y-4">
           <input
             type="file"
             accept="application/pdf"
-            onChange={(e) => setFile(e.target.files[0])}
+            onChange={(e) => {
+              const files = e.target.files;
+              setFile(files && files[0] ? files[0] : null);
+            }}
             required
-            className="w-full px-4 py-2 border rounded"
+            className="w-full px-4 py-2 border rounded text-black"
           />
           <button
             type="submit"
