@@ -1,55 +1,70 @@
 "use client";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 
-export default function Home() {
-  const [email, setEmail] = useState("");
+export default function CreateProfile() {
+  const [senderEmail, setSenderEmail] = useState("");
+  const [pdfFile, setPdfFile] = useState<File | null>(null);
   const [status, setStatus] = useState("");
+
+  const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setStatus("Sending...");
+    if (!senderEmail || !pdfFile) return alert("All fields are required");
 
+    const formData = new FormData();
+    formData.append("senderEmail", senderEmail);
+    formData.append("pdf", pdfFile);
+
+    setStatus("Creating profile...");
     try {
-      const res = await fetch("http://localhost:5000/api/email", {
+      const res = await fetch("https://email-market.onrender.com/api/profile/create", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email }),
+        body: formData,
       });
 
+      const data = await res.json();
       if (res.ok) {
-        setStatus("PDF sent to your email!");
-        setEmail("");
+        router.push(`/profile/${data.id}`);
       } else {
-        const data = await res.json();
-        setStatus("Error: " + data.error);
+        setStatus(data.error || "Failed to create profile");
       }
     } catch (err) {
-      setStatus("Error sending email");
+      setStatus("Error creating profile");
     }
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100 p-4">
-      <div className="bg-white p-8 rounded shadow-md w-full max-w-md">
-        <h1 className="text-2xl font-bold mb-4 text-blue-700">Get Your Gift</h1>
+    <div className="min-h-screen bg-gray-100 flex items-center justify-center p-4">
+      <div className="bg-white p-6 rounded shadow-md w-full max-w-lg">
+        <h1 className="text-xl font-semibold mb-4 text-blue-700">Create Profile</h1>
         <form onSubmit={handleSubmit} className="space-y-4">
           <input
             type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            placeholder="Enter your email"
+            placeholder="Sender Email"
+            value={senderEmail}
+            onChange={(e) => setSenderEmail(e.target.value)}
+            className="w-full px-4 py-2 border rounded text-blue-700"
             required
-            className="w-full px-4 py-2 border rounded text-black ::placeholder-gray-500"
           />
+          <input
+            type="file"
+            accept="application/pdf"
+            onChange={(e) => setPdfFile(e.target.files && e.target.files[0] ? e.target.files[0] : null)}
+            className="w-full px-4 py-2 border rounded text-black"
+            required
+          />
+          
           <button
             type="submit"
             className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700"
           >
-            Send PDF
+            Create Profile
           </button>
         </form>
         {status && <p className="mt-4 text-center text-sm text-gray-700">{status}</p>}
       </div>
     </div>
   );
-} 
+}
