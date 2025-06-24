@@ -8,10 +8,10 @@ type Profile = {
 };
 
 export default function ProfilePage() {
-  // const router = useRouter();
   const params = useParams();
   const id = params.id as string | undefined;
   const [profile, setProfile] = useState<Profile | null>(null);
+  const [loading, setLoading] = useState(true);
   const [email, setEmail] = useState("");
   const [status, setStatus] = useState("");
 
@@ -19,8 +19,15 @@ export default function ProfilePage() {
     if (id) {
       fetch(`https://email-market.onrender.com/api/profile/${id}`)
         .then((res) => res.json())
-        .then((data) => setProfile(data.profile))
-        .catch(() => setStatus("Profile not found."));
+        .then((data) => {
+          if (data && data.profile) {
+            setProfile(data.profile);
+          } else {
+            setStatus("Profile not found.");
+          }
+        })
+        .catch(() => setStatus("Failed to load profile."))
+        .finally(() => setLoading(false));
     }
   }, [id]);
 
@@ -48,7 +55,10 @@ export default function ProfilePage() {
   return (
     <div className="p-4 max-w-xl mx-auto">
       <h1 className="text-xl font-semibold mb-4">Access Your PDF</h1>
-      {profile ? (
+
+      {loading ? (
+        <p>Loading profile...</p>
+      ) : profile ? (
         <>
           <p className="text-sm mb-4">From: {profile.senderEmail}</p>
           <form onSubmit={handleSubmit} className="space-y-4">
@@ -69,8 +79,9 @@ export default function ProfilePage() {
           </form>
         </>
       ) : (
-        <p>Loading profile...</p>
+        <p className="text-red-500">{status || "Profile not found."}</p>
       )}
+
       {status && <p className="mt-4 text-center text-sm text-gray-700">{status}</p>}
     </div>
   );
