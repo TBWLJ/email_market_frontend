@@ -28,8 +28,9 @@ export default function CreateProfile() {
       } else {
         setStatus(data.error || "Failed to create profile");
       }
-    } catch (err) {
-      setStatus("Server error");
+    } catch (err: any) {
+      console.error("Upload error:", err);
+      setStatus("Server error: " + (err?.message || "Unknown error"));
     }
   };
 
