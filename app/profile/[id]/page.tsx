@@ -1,6 +1,6 @@
 "use client";
 import { useState, useEffect } from "react";
-import { useRouter } from "next/router";
+import { useRouter, useParams } from "next/navigation";
 
 // Define the profile type
 interface Profile {
@@ -12,7 +12,8 @@ interface Profile {
 
 export default function ProfilePage() {
   const router = useRouter();
-  const { id } = router.query;
+  const params = useParams();
+  const id = params.id as string | undefined;
 
   const [email, setEmail] = useState("");
   const [status, setStatus] = useState("");
