@@ -9,30 +9,38 @@ type Profile = {
 
 export default function ProfilePage() {
   const params = useParams();
-  const id = params.id as string | undefined;
+  const id = params.id as string;
   const [profile, setProfile] = useState<Profile | null>(null);
   const [loading, setLoading] = useState(true);
   const [email, setEmail] = useState("");
   const [status, setStatus] = useState("");
 
   useEffect(() => {
-    if (id) {
-      fetch(`https://email-market.onrender.com/api/profile/${id}`)
-        .then((res) => res.json())
-        .then((data) => {
-          if (data && data.profile) {
-            setProfile(data.profile);
-          } else {
-            setStatus("Profile not found.");
-          }
-        })
-        .catch(() => setStatus("Failed to load profile."))
-        .finally(() => setLoading(false));
-    }
+    if (!id) return;
+
+    const fetchProfile = async () => {
+      try {
+        const res = await fetch(`https://email-market.onrender.com/api/profile/${id}`);
+        const data = await res.json();
+        if (res.ok && data.profile) {
+          setProfile(data.profile);
+        } else {
+          setStatus("Profile not found.");
+        }
+      } catch (err) {
+        setStatus("Failed to load profile.");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProfile();
   }, [id]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!email) return;
+
     setStatus("Sending PDF...");
     try {
       const res = await fetch(`https://email-market.onrender.com/api/profile/send/${id}`, {
@@ -42,13 +50,13 @@ export default function ProfilePage() {
       });
       const data = await res.json();
       if (res.ok) {
-        setStatus("PDF sent to your email!");
+        setStatus("✅ PDF sent to your email!");
         setEmail("");
       } else {
-        setStatus(data.error || "Failed to send PDF.");
+        setStatus(data.error || "❌ Failed to send PDF.");
       }
     } catch (err) {
-      setStatus("Something went wrong.");
+      setStatus("❌ Something went wrong.");
     }
   };
 
@@ -79,7 +87,7 @@ export default function ProfilePage() {
           </form>
         </>
       ) : (
-        <p className="text-red-500">{status || "Profile not found."}</p>
+        <p className="text-red-500">{status}</p>
       )}
 
       {status && <p className="mt-4 text-center text-sm text-gray-700">{status}</p>}

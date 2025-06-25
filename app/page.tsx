@@ -9,7 +9,10 @@ export default function CreateProfile() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!pdf || !senderEmail) return;
+    if (!pdf || !senderEmail) {
+      setStatus("Please provide all fields.");
+      return;
+    }
 
     const formData = new FormData();
     formData.append("pdf", pdf);
@@ -20,17 +23,21 @@ export default function CreateProfile() {
         method: "POST",
         body: formData,
       });
+
       const data = await res.json();
+
       if (res.ok) {
         const shareLink = `https://email-market-frontend.vercel.app/profile/${data.profile._id}`;
         setLink(shareLink);
-        setStatus("Profile created successfully!");
+        setStatus("✅ Profile created successfully!");
+        setSenderEmail("");
+        setPdf(null);
       } else {
-        setStatus(data.error || "Failed to create profile");
+        setStatus(data.error || "❌ Failed to create profile.");
       }
     } catch (err: any) {
       console.error("Upload error:", err);
-      setStatus("Server error: " + (err?.message || "Unknown error"));
+      setStatus("❌ Server error: " + (err?.message || "Unknown error"));
     }
   };
 
@@ -61,11 +68,11 @@ export default function CreateProfile() {
         </button>
       </form>
 
-      {status && <p className="mt-4">{status}</p>}
+      {status && <p className="mt-4 text-sm">{status}</p>}
       {link && (
         <div className="mt-4">
           <p className="text-green-600">Share this link:</p>
-          <a href={link} className="text-blue-500 underline break-words">
+          <a href={link} className="text-blue-500 underline break-words" target="_blank" rel="noreferrer">
             {link}
           </a>
         </div>
