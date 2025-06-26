@@ -5,7 +5,7 @@ import { useState } from "react";
 
 const navLinks = [
   { name: "Home", path: "/" },
-  { name: "Profile List", path: "/profile" },
+  { name: "ProfileList", path: "/profileList" },
 ];
 
 export default function Navbar() {
