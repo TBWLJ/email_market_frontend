@@ -27,7 +27,7 @@ export default function ProfilePage() {
         } else {
           setStatus("Profile not found.");
         }
-      } catch (err) {
+      } catch {
         setStatus("Failed to load profile.");
       } finally {
         setLoading(false);
@@ -55,42 +55,47 @@ export default function ProfilePage() {
       } else {
         setStatus(data.error || "❌ Failed to send PDF.");
       }
-    } catch (err) {
+    } catch {
       setStatus("❌ Something went wrong.");
     }
   };
 
   return (
-    <div className="p-4 max-w-xl mx-auto">
-      <h1 className="text-xl font-semibold mb-4">Access Your Free Gift</h1>
+    <main className="min-h-screen flex flex-col justify-center items-center bg-gradient-to-r from-green-100 to-green-50 px-6">
+      <div className="bg-white p-8 rounded-lg shadow-md max-w-md w-full text-center">
+        <h1 className="text-2xl font-bold mb-6 text-green-800">Claim Your Free Gift</h1>
 
-      {loading ? (
-        <p>Loading profile...</p>
-      ) : profile ? (
-        <>
-          <p className="text-sm mb-4">From: {profile.senderEmail}</p>
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <input
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="Enter your email"
-              className="w-full px-4 py-2 border rounded"
-              required
-            />
-            <button
-              type="submit"
-              className="w-full bg-green-600 text-white py-2 rounded hover:bg-green-700"
-            >
-              Claim now
-            </button>
-          </form>
-        </>
-      ) : (
-        <p className="text-red-500">{status}</p>
-      )}
+        {loading ? (
+          <p className="text-gray-600">Loading...</p>
+        ) : profile ? (
+          <>
+            <p className="mb-4 text-sm text-gray-500">Sent by <span className="font-semibold">{profile.senderEmail}</span></p>
 
-      {status && <p className="mt-4 text-center text-sm text-gray-700">{status}</p>}
-    </div>
+            <form onSubmit={handleSubmit} className="space-y-4">
+              <input
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="Your email address"
+                className="w-full border border-green-300 rounded px-4 py-3 focus:outline-none focus:ring-2 focus:ring-green-400"
+                required
+              />
+              <button
+                type="submit"
+                className="w-full bg-green-600 text-white font-semibold py-3 rounded hover:bg-green-700 transition"
+              >
+                Get PDF Now
+              </button>
+            </form>
+          </>
+        ) : (
+          <p className="text-red-500">{status || "Profile not found."}</p>
+        )}
+
+        {status && !loading && (
+          <p className="mt-5 text-sm text-gray-700">{status}</p>
+        )}
+      </div>
+    </main>
   );
 }
