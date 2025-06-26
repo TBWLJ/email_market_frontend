@@ -84,7 +84,7 @@ export default function ProfilePage() {
                 type="submit"
                 className="w-full bg-green-600 text-white font-semibold py-3 rounded hover:bg-green-700 transition"
               >
-                Get PDF Now
+                Claim Your Gift
               </button>
             </form>
           </>
