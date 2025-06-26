@@ -50,7 +50,7 @@ export default function ProfilePage() {
       });
       const data = await res.json();
       if (res.ok) {
-        setStatus("✅ PDF sent to your email!");
+        setStatus("Your gift has been sent! 🎁");
         setEmail("");
       } else {
         setStatus(data.error || "❌ Failed to send PDF.");
