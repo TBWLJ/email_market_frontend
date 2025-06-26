@@ -14,8 +14,7 @@ type Profile = {
 };
 
 export default function ProfileDetails() {
-  const params = useParams();
-  const id = params.id as string;
+  const { id } = useParams();
   const [profile, setProfile] = useState<Profile | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
