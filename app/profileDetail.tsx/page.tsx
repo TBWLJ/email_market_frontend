@@ -23,7 +23,7 @@ export default function ProfileDetails() {
   useEffect(() => {
     const fetchProfile = async () => {
       try {
-        const res = await fetch(`https://email-market.onrender.com/api/profile/${id}`);
+        const res = await fetch(`https://email-market.onrender.com/api/profile/getone/${id}`);
         const data = await res.json();
         if (res.ok && data.profile) {
           setProfile(data.profile);
