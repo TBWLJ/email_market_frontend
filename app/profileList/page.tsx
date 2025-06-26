@@ -66,7 +66,7 @@ export default function ProfileList() {
                 </td>
                 <td className="py-3 px-4">
                   <Link
-                    href={`/profileDetail/${profile._id}`}
+                    href={`https://email-market.onrender.com/api/profile/getone/${profile._id}`}
                     className="text-blue-600 hover:underline"
                   >
                     View Details
