@@ -62,7 +62,7 @@ export default function ProfilePage() {
 
   return (
     <div className="p-4 max-w-xl mx-auto">
-      <h1 className="text-xl font-semibold mb-4">Access Your PDF</h1>
+      <h1 className="text-xl font-semibold mb-4">Access Your Free Gift</h1>
 
       {loading ? (
         <p>Loading profile...</p>
@@ -82,7 +82,7 @@ export default function ProfilePage() {
               type="submit"
               className="w-full bg-green-600 text-white py-2 rounded hover:bg-green-700"
             >
-              Send PDF
+              Claim now
             </button>
           </form>
         </>
