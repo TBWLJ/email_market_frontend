@@ -1,6 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import Navbar from "@/components/Navbar";
 
 type Profile = {
   _id: string;
@@ -41,6 +42,8 @@ export default function ProfileList() {
   if (error) return <div className="p-4 text-red-500">{error}</div>;
 
   return (
+    <>
+    <Navbar />
     <div className="p-4 max-w-4xl mx-auto">
       <h1 className="text-2xl font-bold mb-6">All Profiles</h1>
       
@@ -78,5 +81,6 @@ export default function ProfileList() {
         </table>
       </div>
     </div>
+    </>
   );
 }

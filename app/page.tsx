@@ -1,5 +1,6 @@
 "use client";
 import { useState } from "react";
+import Navbar from "@/components/Navbar";
 
 export default function CreateProfile() {
   const [senderEmail, setSenderEmail] = useState("");
@@ -42,6 +43,8 @@ export default function CreateProfile() {
   };
 
   return (
+    <>
+    <Navbar/>
     <div className="p-4 max-w-xl mx-auto">
       <h1 className="text-xl font-semibold mb-4">Create Profile</h1>
       <form onSubmit={handleSubmit} className="space-y-4">
@@ -78,5 +81,6 @@ export default function CreateProfile() {
         </div>
       )}
     </div>
+    </>
   );
 }
