@@ -17,7 +17,7 @@ export default function Navbar() {
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <div className="flex-shrink-0 font-bold text-xl tracking-wide cursor-pointer">
-            <Link href="/">FancyBrand</Link>
+            <Link href="/">Starlight</Link>
           </div>
 
           {/* Desktop Links */}
