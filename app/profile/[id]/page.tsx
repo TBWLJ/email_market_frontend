@@ -61,7 +61,7 @@ export default function ProfilePage() {
   };
 
   return (
-    <div className="p-4 max-w-xl mx-auto">
+    <div className="p-4 max-w-xl mx-auto flex justify-center">
       <h1 className="text-xl font-semibold mb-4">Access Your Free Gift</h1>
 
       {loading ? (
